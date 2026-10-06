@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to February 2</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1f4068, #162447);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        .countdown-container {
+            display: flex;
+            gap: 15px;
+            text-align: center;
+        }
+        .time-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            border-radius: 8px;
+            min-width: 70px;
+            backdrop-filter: blur(5px);
+        }
+        .time-box span {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+        .time-box label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #a7a9be;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Countdown to February 2</h1>
+    <div class="countdown-container" id="countdown">
+        <div class="time-box">
+            <span id="days">00</span>
+            <label>Days</label>
+        </div>
+        <div class="time-box">
+            <span id="hours">00</span>
+            <label>Hours</label>
+        </div>
+        <div class="time-box">
+            <span id="minutes">00</span>
+            <label>Minutes</label>
+        </div>
+        <div class="time-box">
+            <span id="seconds">00</span>
+            <label>Seconds</label>
+        </div>
+    </div>
+
+    <script>
+        // Set target date for the upcoming February 2
+        function getTargetDate() {
+            const now = new Date();
+            let year = now.getFullYear();
+            // Month is 0-indexed, so February is 1
+            let target = new Date(year, 1, 2, 0, 0, 0);
+            
+            // If February 2 has already passed this year, target next year
+            if (now.getTime() > target.getTime()) {
+                target = new Date(year + 1, 1, 2, 0, 0, 0);
+            }
+            return target.getTime();
+        }
+
+        const targetDate = getTargetDate();
+
+        const timer = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("countdown").innerHTML = "<h2>The event has arrived!</h2>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = String(days).padStart(2, '0');
+            document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+        }, 1000);
+    </script>
+</body>
+</html>
